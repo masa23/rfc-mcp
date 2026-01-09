@@ -1,0 +1,22 @@
+[Unit]
+Description=RFC MCP Server
+After=network.target
+
+[Service]
+Type=simple
+
+# Run as an unprivileged user. This service does not need root.
+DynamicUser=yes
+
+# Create /var/cache/rfc-mcp (and set permissions) automatically.
+CacheDirectory=rfc-mcp
+
+# Example config location. Place your config at /usr/local/etc/rfc-mcp.yaml
+ExecStart=/usr/local/bin/rfc-mcp -config=/usr/local/etc/rfc-mcp.yaml
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

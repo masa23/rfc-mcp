@@ -1,0 +1,9 @@
+server:
+  mode: http
+  host: localhost
+  port: 7991
+  path: /mcp
+
+cache:
+  ttl: 1h
+  dir: /tmp/rfc-mcp-cache
