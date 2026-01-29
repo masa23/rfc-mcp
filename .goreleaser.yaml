@@ -1,0 +1,76 @@
+version: 2
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - dir: cmd/rfc-mcp
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+    flags:
+      - -trimpath
+    ldflags:
+      - -s -w -X main.version={{.Version}}
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+
+archives:
+  - name_template: >-
+      {{- .ProjectName }}_
+      {{- title .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else }}{{ .Arch }}{{ end }}
+      {{- if .Arm }}v{{ .Arm }}{{ end -}}
+    files:
+      - CREDITS
+      - LICENSE
+      - README.md
+      - src: cmd/rfc-mcp/config.yaml
+        dst: rfc-mcp.yaml.sample
+
+nfpms:
+  - id: rfc-mcp
+    file_name_template: "{{ .ProjectName }}_{{ .Version }}-1_{{ .Arch }}"
+    builds:
+      - rfc-mcp
+    homepage: https://github.com/masa23/rfc-mcp
+    maintainer: Masafumi Yamamoto <masa23@gmail.com>
+    description: "RFC MCP Server"
+    license: MIT
+    formats:
+      - deb
+      - rpm
+    bindir: /usr/bin
+    section: utils
+    scripts:
+      preinstall: misc/scripts/preinstall.sh
+      postinstall: misc/scripts/postinstall.sh
+    contents:
+      - dst: /lib/systemd/system/rfc-mcp.service
+        src: misc/files/rfc-mcp.service
+        type: config
+      - dst: /etc/rfc-mcp/rfc-mcp.yaml
+        src: cmd/rfc-mcp/config.yaml
+        type: config
+      - dst: /usr/share/doc/rfc-mcp/CREDITS
+        src: CREDITS
+      - dst: /var/run/rfc-mcp
+        type: dir
+        file_info:
+          mode: 0755
+      - dst: /usr/share/doc/rfc-mcp
+        type: dir
+        file_info:
+          mode: 0755
+      - dst: /etc/rfc-mcp
+        type: dir
+        file_info:
+          mode: 0700

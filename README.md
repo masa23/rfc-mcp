@@ -123,17 +123,36 @@ server:
 
 設定ファイルはプログラムの起動時に自動的に読み込まれます。設定ファイルが存在しない場合や読み込みに失敗した場合は、デフォルト値が使用されます。
 
-## Streamable HTTP (SSE) モードでの使用例
+## Streamable HTTP モードでの使用例
 
-HTTPモードでは、Streamable HTTP (Server-Sent Events) を使用してMCPサーバーと通信します。これにより、より効率的な双方向通信が可能になります。
-
-Roo CodeなどのMCPクライアントからHTTPモードのサーバーに接続するには、以下のようなURLを使用します：
+HTTPモードでは、Streamable HTTP を使用してMCPサーバーと通信します。
+Streamable HTTP は、通常の HTTP リクエストに対してレスポンスを
+ストリーミングで返す方式で、SSE を使用しない
+ステートレスな通信モデルです。
 
 ```
 http://localhost:7991/mcp
 ```
 
 ポート番号やホスト名は、設定ファイルや起動時のフラグで変更されている場合があります。
+
+## Roo Codeでの設定例
+
+``` json
+{
+  "mcpServers": {
+    "rfc-mcp": {
+      "type": "streamable-http",
+      "url": "http://localhost:7991/mcp",
+      "alwaysAllow": [
+        "rfc_search",
+        "rfc_fetch",
+        "rfc_extract"
+      ]
+    }
+  }
+}
+```
 
 ## キャッシュ
 
