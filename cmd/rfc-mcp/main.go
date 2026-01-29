@@ -178,7 +178,7 @@ func main() {
 	case config.ModeHTTP:
 		log.Printf("Starting MCP server in http mode on %s%s", httpAddr, conf.Server.Path)
 
-		// Streamable HTTP (SSE) handler
+		// Streamable HTTP handler
 		handler := mcp.NewStreamableHTTPHandler(func(_ *http.Request) *mcp.Server {
 			return s
 		}, nil)
