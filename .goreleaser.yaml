@@ -57,7 +57,7 @@ nfpms:
       - dst: /lib/systemd/system/rfc-mcp.service
         src: misc/files/rfc-mcp.service
         type: config
-      - dst: /etc/rfc-mcp/rfc-mcp.yaml
+      - dst: /etc/rfc-mcp.yaml
         src: cmd/rfc-mcp/config.yaml
         type: config
       - dst: /usr/share/doc/rfc-mcp/CREDITS
